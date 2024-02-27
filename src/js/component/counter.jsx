@@ -3,33 +3,37 @@ import { useState, useEffect } from 'react';
 
 
 //create your first component
-export const TimeCount= (props)=> {
+export const TimeCount= ()=> {
 
     const [counter, setCounter] = useState(57);
-    const [counterM, setCounterM] = useState(0);
+    const [counterM, setCounterM] = useState(58);
+    const [counterH, setCounterH] = useState(0);
 
 let  interval_sec;
-let  interval_min;
 
   useEffect(() => {
      interval_sec = setInterval(() => {
       setCounter(counter+1);
      // setCounterM(Math.trunc(counter/60))
       if(counter==59){
+        if(counterM==59){
+          setCounterM(0);
+          setCounter(0);
+          setCounterH(counterH+1);
+          console.log('test')
+        }
+        else{
         setCounter(0);
         setCounterM(counterM+1);
       }
+    }
   
     }, 1000);
 
-    // interval_min = setInterval(() => {
-    //  setCounterM(counterM+1);
-    //  alert('test')
-    // }, 5000);
 
     return () => {
       clearInterval(interval_sec);
-      clearInterval(interval_min);
+   
     }
   }, [counter,counterM]);
 
@@ -38,7 +42,7 @@ let  interval_min;
 function stopCounter (){
  
 clearInterval(interval_sec);
-clearInterval(interval_min);
+
 
 }
 
@@ -46,20 +50,23 @@ function startCounter (){
  
   interval_sec = setInterval(() => {
     setCounter(counter+1);
+    if(counter==59){
+      setCounter(counter+1);
+      setCounterM(counterM+1);
+    }else{
+      setCounter(counter+1);
+    }
   }, 1000);
 
-  interval_min = setInterval(() => {
-    setCounter(counterM+1);
-  }, 60000);
-  
+ 
   }
 
   function resetCounter (){
+    setCounter(0);
+    setCounterM(0);
+    setCounterH(0);
     clearInterval(interval_sec);
-     setCounter(0);
-    interval_sec = setInterval(() => {
-      setCounter(counter+1);
-    }, 1000);
+
     }
     
 
@@ -73,7 +80,7 @@ function startCounter (){
             00  </span> 
         <span class="txt">Hr  </span> 
         <span class="digit" id="min"> 
-            00  </span> 
+            {counterH}  </span> 
         <span class="txt">Min  </span> 
         <span class="digit" id="sec"> 
             {counterM} </span> 
