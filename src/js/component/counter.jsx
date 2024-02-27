@@ -5,39 +5,59 @@ import { useState, useEffect } from 'react';
 //create your first component
 export const TimeCount= (props)=> {
 
-    const [counter, setCounter] = useState(0);
-  //   const interval = setInterval(() => {
-  //     setCounter(counter+1);
-  // }, 1000);
-let  interval;
+    const [counter, setCounter] = useState(57);
+    const [counterM, setCounterM] = useState(0);
+
+let  interval_sec;
+let  interval_min;
 
   useEffect(() => {
-     interval = setInterval(() => {
+     interval_sec = setInterval(() => {
       setCounter(counter+1);
+     // setCounterM(Math.trunc(counter/60))
+      if(counter==59){
+        setCounter(0);
+        setCounterM(counterM+1);
+      }
+  
     }, 1000);
-    return () => clearInterval(interval);
-  }, [counter]);
+
+    // interval_min = setInterval(() => {
+    //  setCounterM(counterM+1);
+    //  alert('test')
+    // }, 5000);
+
+    return () => {
+      clearInterval(interval_sec);
+      clearInterval(interval_min);
+    }
+  }, [counter,counterM]);
 
 
 
 function stopCounter (){
  
-clearInterval(interval);
+clearInterval(interval_sec);
+clearInterval(interval_min);
 
 }
 
 function startCounter (){
  
-  interval = setInterval(() => {
+  interval_sec = setInterval(() => {
     setCounter(counter+1);
   }, 1000);
+
+  interval_min = setInterval(() => {
+    setCounter(counterM+1);
+  }, 60000);
   
   }
 
   function resetCounter (){
-    clearInterval(interval);
+    clearInterval(interval_sec);
      setCounter(0);
-    interval = setInterval(() => {
+    interval_sec = setInterval(() => {
       setCounter(counter+1);
     }, 1000);
     }
@@ -46,35 +66,36 @@ function startCounter (){
 	return	(
 
 
+    <div class="container"> 
+    <h1>Timer</h1> 
+    <div id="time"> 
+        <span class="digit" id="hr"> 
+            00  </span> 
+        <span class="txt">Hr  </span> 
+        <span class="digit" id="min"> 
+            00  </span> 
+        <span class="txt">Min  </span> 
+        <span class="digit" id="sec"> 
+            {counterM} </span> 
+        <span class="txt">Sec  </span> 
+        <span class="digit" id="count"> 
+            {counter}  </span> 
+    </div> 
+    <div id="buttons"> 
+        <button class="btn" id="start" onClick={()=>startCounter()}> 
+            Start</button> 
+        <button class="btn" id="stop" onClick={()=>stopCounter()}> 
+            Stop</button> 
+        <button class="btn" id="reset" onClick={()=>resetCounter()}> 
+            Reset</button> 
+    </div> 
+</div> 
 
-       <div><h1>{counter}</h1>
-       <button type="button" onClick={()=>stopCounter()} class="btn btn-success">Stop</button>
-       <button type="button" onClick={()=>startCounter()} class="btn btn-secondary">Start</button>
-       <button type="button" onClick={()=>resetCounter()} class="btn btn-secondary">Reset</button>
-       </div>
+
     );
 	
 };
 // export default TimeCount;
 
 
-
         
-{/* <div class="col-3">
-<div class="card bg-success text-white">
-<h3 class="card-title text-center">
-<div class="d-flex flex-wrap justify-content-center mt-2">
-<a><span class="badge hours"></span></a> :
-<a><span class="badge min"></span></a> :
-<a><span class="badge sec">{counter}</span></a>
-</div>
-</h3>
-</div>
-</div>
-<div class="col-3">
-<button type="button" onClick={stopCounter()} class="btn btn-success">Stop</button>
-</div>
-<div class="col-3">
-<button type="button" class="btn btn-secondary">Reset</button>
-</div>
-</div> */}
