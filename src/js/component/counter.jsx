@@ -12,7 +12,7 @@ export const TimeCount= (props)=> {
         setCounter(counter+1);
     }, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [counter]);
 
 
 	return	(
